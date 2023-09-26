@@ -1,6 +1,6 @@
 <?php
 
-class CommentsByUserTest extends PHPUnit_Framework_TestCase
+class CommentsByUserTest extends \PHPUnit\Framework\TestCase
 {
     private function countCommentsFor($posts, $user)
     {
@@ -14,6 +14,11 @@ class CommentsByUserTest extends PHPUnit_Framework_TestCase
          *
          * return $posts->...
          */
+        return $posts->flatMap(function ($post) {
+            return $post['comments'];
+        })->filter(function ($comment) use ($user) {
+            return $comment['user'] === $user;
+        })->count();
     }
 
     public function test()

@@ -1,6 +1,6 @@
 <?php
 
-class EmployeeWithMostValuableSaleTest extends PHPUnit_Framework_TestCase
+class EmployeeWithMostValuableSaleTest extends \PHPUnit\Framework\TestCase
 {
     public function test()
     {
@@ -44,6 +44,14 @@ class EmployeeWithMostValuableSaleTest extends PHPUnit_Framework_TestCase
          *
          * $employeeWithMostValuableSale = $employees->...
          */
+
+
+        $employeeWithMostValuableSale = $employees->map(function ($employee) {
+            return [
+                'name' => $employee['name'],
+                'total_sales' => collect($employee['sales'])->sum('order_total'),
+            ];
+        })->sortByDesc('total_sales')->first();
 
         $this->assertEquals($employeeWithMostValuableSale['name'], 'Jane');
     }

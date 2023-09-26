@@ -1,6 +1,6 @@
 <?php
 
-class EmailEmployeesWhoSoldToCustomerTest extends PHPUnit_Framework_TestCase
+class EmailEmployeesWhoSoldToCustomerTest extends \PHPUnit\Framework\TestCase
 {
     private function emailTo($employees, $customer)
     {
@@ -15,6 +15,9 @@ class EmailEmployeesWhoSoldToCustomerTest extends PHPUnit_Framework_TestCase
          *
          * return $employees->...
          */
+        return $employees->filter(function ($employee) use ($customer) {
+            return collect($employee['sales'])->pluck('customer')->contains($customer);
+        })->pluck('email')->implode(',');
     }
 
     public function test()

@@ -1,12 +1,12 @@
 <?php
 
-class UsingReduceTest extends PHPUnit_Framework_TestCase
+class UsingReduceTest extends \PHPUnit\Framework\TestCase
 {
     private function reduce($items, $callback, $initial)
     {
-        /*
-         * Copy your implementation from Exercise 3 here!
-         */
+        return collect($items)->reduce(function ($sum, $number) use($callback) {
+            return $callback($sum, $number);
+        }, $initial);
     }
 
     public function test_calculate_the_product_of_a_list_of_numbers()
@@ -18,6 +18,11 @@ class UsingReduceTest extends PHPUnit_Framework_TestCase
          *
          * $product = $this->reduce($numbers, ...)
          */
+
+        $product = $this->reduce($numbers, function ($sum, $number) {
+           return  $sum * $number;
+        }, 1);
+
 
         $this->assertEquals(720, $product);
     }
@@ -35,6 +40,11 @@ class UsingReduceTest extends PHPUnit_Framework_TestCase
          *
          * $emailLookup = $this->reduce($users, ...)
          */
+
+        $emailLookup = $this->reduce($users, function ($array, $user) {
+            $array[$user['name']] = $user['email'];
+            return $array;
+        }, []);
 
         $this->assertEquals([
             'John' => 'john@example.com',
@@ -59,6 +69,15 @@ class UsingReduceTest extends PHPUnit_Framework_TestCase
          *
          * $departmentCounts = $this->reduce($employees, ...)
          */
+
+        $departmentCounts = $this->reduce($employees, function ($array, $employee) {
+            if (!isset($array[$employee['department']])) {
+                $array[$employee['department']] = 0;
+            }
+            $array[$employee['department']]++;
+            return $array;
+        }, []);
+
 
         $this->assertEquals([
             'Sales' => 1,

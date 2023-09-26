@@ -6,7 +6,7 @@ class UsingFilterTest extends \PHPUnit\Framework\TestCase
     {
         return collect($items)->filter(function ($item) use ($callback) {
             return $callback($item);
-        })->all();
+        })->values()->all();
     }
 
     public function test_get_part_time_employees()
@@ -27,7 +27,7 @@ class UsingFilterTest extends \PHPUnit\Framework\TestCase
          */
 
         $partTimers = $this->filter($employees, function ($employee) {
-            return $employee['employment'] = 'Part Time';
+            return $employee['employment'] === 'Part Time';
         });
 
 
@@ -55,6 +55,10 @@ class UsingFilterTest extends \PHPUnit\Framework\TestCase
          *
          * $inStock = $this->filter($products, ...)
          */
+        $inStock = $this->filter($products, function ($product) {
+           return $product['stock_quantity'] !== 0;
+        });
+
 
         $this->assertEquals([
             ['product' => 'Banana', 'stock_quantity' => 12],
@@ -80,6 +84,11 @@ class UsingFilterTest extends \PHPUnit\Framework\TestCase
          *
          * $bigCities = $this->filter($cities, ...)
          */
+
+        $bigCities = $this->filter($cities, function ($city) {
+            return $city['population'] >= 120000;
+        });
+
 
         $this->assertEquals([
             ['name' => 'Kitchener', 'population' => 204688],

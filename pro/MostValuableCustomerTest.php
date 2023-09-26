@@ -1,6 +1,6 @@
 <?php
 
-class MostValuableCustomerTest extends PHPUnit_Framework_TestCase
+class MostValuableCustomerTest extends \PHPUnit\Framework\TestCase
 {
     public function test()
     {
@@ -62,6 +62,17 @@ class MostValuableCustomerTest extends PHPUnit_Framework_TestCase
          *
          * $mostValuableCustomer = $employees->...
          */
+
+
+        $mostValuableCustomer = $employees->flatMap(function ($employee) {
+            return $employee['sales'];
+        })->groupBy('customer')
+            ->map(function ($sales) {
+                return $sales->sum('order_total');
+            })->sortByDesc(function ($total) {
+                return $total;
+            })->keys()
+              ->first();
 
         $this->assertEquals('Yellow Cake', $mostValuableCustomer);
     }

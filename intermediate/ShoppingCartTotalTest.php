@@ -1,6 +1,6 @@
 <?php
 
-class ShoppingCartTotalTest extends PHPUnit_Framework_TestCase
+class ShoppingCartTotalTest extends \PHPUnit\Framework\TestCase
 {
     public function test()
     {
@@ -23,6 +23,12 @@ class ShoppingCartTotalTest extends PHPUnit_Framework_TestCase
          *
          * $totalPrice = $shoppingCart->...
          */
+
+        $totalPrice = $shoppingCart
+            ->map(function ($item) {
+                return $item['unit_price'] * $item['quantity'];
+            })
+            ->sum();
 
         $this->assertEquals(3097, $totalPrice);
     }

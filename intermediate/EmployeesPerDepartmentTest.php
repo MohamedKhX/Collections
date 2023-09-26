@@ -1,6 +1,6 @@
 <?php
 
-class EmployeesPerDepartmentTest extends PHPUnit_Framework_TestCase
+class EmployeesPerDepartmentTest extends \PHPUnit\Framework\TestCase
 {
     public function test()
     {
@@ -26,6 +26,12 @@ class EmployeesPerDepartmentTest extends PHPUnit_Framework_TestCase
          *
          * $departmentCounts = $employees->...
          */
+
+
+        $departmentCounts = $employees->groupBy('department')
+            ->map(function ($employees) {
+                return $employees->count();
+            });
 
         $this->assertEquals([
             'Sales' => 2,

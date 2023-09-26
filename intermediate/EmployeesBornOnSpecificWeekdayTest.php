@@ -1,6 +1,6 @@
 <?php
 
-class EmployeesBornOnSpecificWeekdayTest extends PHPUnit_Framework_TestCase
+class EmployeesBornOnSpecificWeekdayTest extends \PHPUnit\Framework\TestCase
 {
     private function employeesBornOn($employees, $day)
     {
@@ -14,6 +14,11 @@ class EmployeesBornOnSpecificWeekdayTest extends PHPUnit_Framework_TestCase
          *
          * return $employees->...
          */
+
+        return $employees
+            ->filter(function ($employee) use ($day) {
+                return strtolower(date('l', strtotime($employee['date_of_birth']))) === strtolower($day);
+            })->values();
     }
 
     public function test()
@@ -55,6 +60,5 @@ class EmployeesBornOnSpecificWeekdayTest extends PHPUnit_Framework_TestCase
         ], $this->employeesBornOn($employees, 'Thursday')->all());
 
         $this->assertEquals([], $this->employeesBornOn($employees, 'Friday')->all());
-        $this->assertEquals([], $this->employeesBornOn($employees, 'Saturday')->all());
-    }
+        $this->assertEquals([], $this->employeesBornOn($employees, 'Saturday')->all()); }
 }

@@ -1,6 +1,6 @@
 <?php
 
-class MarketingEmployeeEmailsTest extends PHPUnit_Framework_TestCase
+class MarketingEmployeeEmailsTest extends \PHPUnit\Framework\TestCase
 {
     public function test()
     {
@@ -23,6 +23,10 @@ class MarketingEmployeeEmailsTest extends PHPUnit_Framework_TestCase
          *
          * $emails = $employees->...
          */
+
+        $emails = $employees
+            ->where('department', 'Marketing')
+            ->pluck('email');
 
         $this->assertEquals([
             'jane8@example.com',

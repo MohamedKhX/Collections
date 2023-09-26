@@ -1,12 +1,12 @@
 <?php
 
-class UsingFilterTest extends PHPUnit_Framework_TestCase
+class UsingFilterTest extends \PHPUnit\Framework\TestCase
 {
     private function filter($items, $callback)
     {
-        /*
-         * Copy your implementation from Exercise 2 here!
-         */
+        return collect($items)->filter(function ($item) use ($callback) {
+            return $callback($item);
+        })->all();
     }
 
     public function test_get_part_time_employees()
@@ -25,6 +25,11 @@ class UsingFilterTest extends PHPUnit_Framework_TestCase
          *
          * $partTimers = $this->filter($employees, ...)
          */
+
+        $partTimers = $this->filter($employees, function ($employee) {
+            return $employee['employment'] = 'Part Time';
+        });
+
 
         $this->assertEquals([
             ['name' => 'John', 'department' => 'Sales', 'employment' => 'Part Time'],
